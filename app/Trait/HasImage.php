@@ -5,11 +5,6 @@ namespace App\Trait;
 
 use App\Models\Image;
 
-
-// https://replit.com/@ByronLoarte/18-Traits#index.php
-// https://www.php.net/manual/es/language.oop5.traits.php
-
-
 trait HasImage
 {
 
