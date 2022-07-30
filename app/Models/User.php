@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Trait\HasImage;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasImage;
 
     /**
      * The attributes that are mass assignable.
@@ -18,12 +19,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'email', 'username', 'first_name', 'last_name', 'personal_phone', 'home_phone',
+        'address', 'password', 'birthdate',
     ];
-
-    
 
     /**
      * The attributes that should be hidden for serialization.
@@ -44,7 +42,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-        // Relación de uno a muchos
+
+    // Relación de uno a muchos
     // Un usuario le pertenece un rol
     public function role()
     {
@@ -85,7 +84,24 @@ class User extends Authenticatable
         return "$this->first_name $this->last_name";
     }
 
+    // Crear un avatar por default
+    public function getDefaultAvatarPath()
+    {
+        return "https://cdn-icons-png.flaticon.com/512/711/711769.png";
+    }
 
 
+    // Obtener la imagen de la BDD
+    public function getAvatarPath()
+    {
+        // se verifica no si existe una iamgen
+        if (!$this->image)
+        {
+            // asignarle el path de una imagen por defecto
+            return $this->getDefaultAvatarPath();
+        }
+        // retornar el path de la imagen registrada en la BDD
+        return $this->image->path;
+    }
 
 }

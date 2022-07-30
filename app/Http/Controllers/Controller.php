@@ -33,6 +33,4 @@ class Controller extends BaseController
         // https://laravel.com/docs/9.x/responses#json-responses
         return response()->json($response, $code);
     }
-
-
 }
