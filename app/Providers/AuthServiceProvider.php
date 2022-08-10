@@ -14,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        Report::class => ReportPolicy::class,
     ];
 
     /**
@@ -45,7 +45,7 @@ class AuthServiceProvider extends ServiceProvider
         {
             return $user->role->slug === "admin";
         });
-        
+
         // El usuario con perfil director solo puede realizar la
         // gestión (CRUD) de pabellones
         Gate::define('manage-wards', function (User $user) {
@@ -57,6 +57,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('manage-jails', function (User $user) {
             return $user->role->slug === "director";
         });
+
+
         // El usuario con perfil director solo puede realizar la
         // asignación de prisioneros a las cárceles
         Gate::define('manage-jails', function (User $user) {
@@ -68,8 +70,6 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('manage-assignment', function (User $user) {
             return $user->role->slug === "director";
         });
-
-
-
+        
     }
 }

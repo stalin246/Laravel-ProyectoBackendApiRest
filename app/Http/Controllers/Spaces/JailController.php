@@ -81,7 +81,7 @@ class JailController extends Controller
             'description' => ['nullable', 'string', 'min:5', 'max:255'],
         ]);
 
-        // Actaliza los datos del usuario
+        // Actualiza los datos del usuario
         $jail->fill($jail_data)->save();
 
         // Invoca el controlador padre para la respuesta json

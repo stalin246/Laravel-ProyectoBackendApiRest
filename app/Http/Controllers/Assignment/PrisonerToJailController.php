@@ -7,6 +7,7 @@ use App\Http\Resources\SpaceResource;
 use App\Http\Resources\UserResource;
 use App\Models\Jail;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PrisonerToJailController extends Controller
@@ -20,6 +21,7 @@ class PrisonerToJailController extends Controller
         // Uso del middleware para que pueda asignar prisioneros a cárceles a partir del rol establecido
         $this->middleware('verify.jail.assignment')->only('assign');
     }
+
 
 
     // Métodos del Controlador
@@ -46,6 +48,7 @@ class PrisonerToJailController extends Controller
         // https://laravel.com/docs/9.x/collections#method-listing
         })->all();
 
+
         // Invoca el controlador padre para la respuesta json
         // El moldeo de la información por los respectivos Resources
         return $this->sendResponse(message: 'Assignment between prisoners and jails generated successfully', result: [
@@ -55,8 +58,9 @@ class PrisonerToJailController extends Controller
     }
 
 
+
     // Método para realizar la asignación respectiva
-    public function assign(UserResource $user, Jail $jail)
+    public function assign(User $user, Jail $jail)
     {
 
         // Obtener solo los id de las cárceles de los usuarios
@@ -66,7 +70,7 @@ class PrisonerToJailController extends Controller
         // https://laravel.com/docs/9.x/eloquent-relationships#syncing-associations
         $user->jails()->syncWithPivotValues($prisoner_jails_id, ['state' => false]);
 
-        $user->jails()->sync($jail->id);
+        $user->jails()->sync([$jail->id]);
 
         // Invoca el controlador padre para la respuesta json
         // El moldeo de la información por el Resource
@@ -75,6 +79,4 @@ class PrisonerToJailController extends Controller
             'jail' => $jail
         ]);
     }
-
-
 }

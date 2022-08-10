@@ -50,6 +50,4 @@ class VerifyWardAssignment
         // pasa a realizar las siguientes acciones
         return $next($request);
     }
-
-
 }

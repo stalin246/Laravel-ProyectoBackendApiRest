@@ -22,6 +22,7 @@ class GuardToWardController extends Controller
         $this->middleware('verify.ward.assignment')->only('assign');
     }
 
+
     // Métodos del Controlador
     // Listar los guardias y pabellones disponibles
     public function index()
@@ -46,6 +47,7 @@ class GuardToWardController extends Controller
         // https://laravel.com/docs/9.x/collections#method-listing
         })->all();
 
+
         // Invoca el controlador padre para la respuesta json
         // El moldeo de la información por los respectivos Resources
         return $this->sendResponse(message: 'Assignment between Guards and wards generated successfully', result: [
@@ -53,6 +55,7 @@ class GuardToWardController extends Controller
             'wards' => SpaceResource::collection($wards)
         ]);
     }
+
 
     // Método para realizar la asignación respectiva
     public function assign(User $user, Ward $ward)
@@ -64,7 +67,6 @@ class GuardToWardController extends Controller
 
         // https://laravel.com/docs/9.x/eloquent-relationships#syncing-associations
         $user->wards()->syncWithPivotValues($guards_wards_id, ['state' => false]);
-
         $user->wards()->sync([$ward->id]);
 
         // Invoca el controlador padre para la respuesta json
@@ -74,6 +76,5 @@ class GuardToWardController extends Controller
             'ward' => $ward
         ]);
     }
-
 
 }

@@ -21,6 +21,7 @@ class VerifyJailAssignment
         // Obtener desde el Request la cárcel
         $jail = $request->route('jail');
 
+
         // Si el usuario no tiene un estado
         // Si el usuario no tiene el rol prisionero
         // Si la cárcel no tiene un estado
@@ -47,6 +48,4 @@ class VerifyJailAssignment
         // pasa a realizar las siguientes acciones
         return $next($request);
     }
-
-
 }

@@ -4,6 +4,9 @@ use App\Http\Controllers\Account\AvatarController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Assignment\GuardToWardController;
 use App\Http\Controllers\Assignment\PrisonerToJailController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\Spaces\JailController;
+use App\Http\Controllers\Spaces\WardController;
 use App\Http\Controllers\Users\DirectorController;
 use App\Http\Controllers\Users\GuardController;
 use App\Http\Controllers\Users\PrisonerController;
@@ -65,6 +68,19 @@ Route::prefix('v1')->group(function ()
                 Route::get('/{user}/destroy', 'destroy');
             });
         });
+
+        Route::prefix("prisoner")->group(function ()
+        {
+            Route::controller(PrisonerController::class)->group(function () {
+                Route::get('/', 'index');
+                Route::post('/create', 'store');
+                Route::get('/{user}', 'show');
+                Route::post('/{user}/update', 'update');
+                Route::get('/{user}/destroy', 'destroy');
+            });
+        });
+
+
         Route::prefix('ward')->group(function () {
             Route::controller(WardController::class)->group(function () {
                 Route::get('/', 'index');
@@ -74,6 +90,7 @@ Route::prefix('v1')->group(function ()
                 Route::get('/{ward}/destroy', 'destroy');
             });
         });
+
 
         Route::prefix('jail')->group(function () {
             Route::controller(JailController::class)->group(function () {
@@ -85,17 +102,30 @@ Route::prefix('v1')->group(function ()
             });
         });
 
-    });
-    Route::prefix('assignment')->group(function () {
-        Route::controller(GuardToWardController::class)->group(function () {
-            Route::get('/guards-and-wards', 'index');
-            Route::get('/guard-to-ward/{user}/{ward}', 'assign');
-        });
-        Route::controller(PrisonerToJailController::class)->group(function () {
-            Route::get('/prisoners-and-jails', 'index');
-            Route::get('/prisoner-to-jail/{user}/{jail}', 'assign');
-        });
-    });
 
 
+        Route::prefix('assignment')->group(function () {
+            Route::controller(GuardToWardController::class)->group(function () {
+                Route::get('/guards-and-wards', 'index');
+                Route::get('/guard-to-ward/{user}/{ward}', 'assign');
+            });
+            Route::controller(PrisonerToJailController::class)->group(function () {
+                Route::get('/prisoners-and-jails', 'index');
+                Route::get('/prisoner-to-jail/{user}/{jail}', 'assign');
+            });
+        });
+        Route::prefix('report')->group(function () {
+            Route::controller(ReportController::class)->group(function ()
+            {
+                Route::get('/', 'index');
+                Route::post('/create', 'store');
+                Route::get('/{report}', 'show');
+                Route::post('/{report}/update', 'update');
+                Route::get('/{report}/destroy', 'destroy');
+            });
+        });
+
+
+
+    });
 });
